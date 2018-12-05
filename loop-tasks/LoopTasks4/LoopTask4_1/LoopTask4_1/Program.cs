@@ -10,7 +10,7 @@ namespace LoopTask4_1
 
             for (int i = 1; i < 11; i++)
             {
-                Console.WriteLine($"{i}.\t{Math.Sqrt(i)}");
+                Console.WriteLine($"{i}.\t{Math.Sqrt(i):f2}");
             }
         }
     }
