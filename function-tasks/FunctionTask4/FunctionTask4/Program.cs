@@ -33,6 +33,7 @@ namespace FunctionTask4
                 else
                 {
                     Console.WriteLine("Väärä syöte! Syötä positiivinen kokonaisluku: ");
+                    i--;
                 }
             }
             Console.WriteLine($"Syötit seuraavat luvut:\n{output}\n");
