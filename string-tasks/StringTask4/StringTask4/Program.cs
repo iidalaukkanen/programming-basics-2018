@@ -20,11 +20,16 @@ namespace StringTask4
             {
                 if (inputTrimmed.Substring(i, 1) != inputTrimmed.Substring(inputTrimmed.Length - 1 - i, 1))
                 {
-                    isPalindrome = "not ";
+                    Console.WriteLine($"{input} ei ole palindromi.");
+                    break;
+                }
+
+                else
+                {
+                    Console.WriteLine($"{input} on palindromi.");
+                    break;
                 }
             }
-            Console.WriteLine("The string {0} is {1}a palindrome.", input, isPalindrome);
-            Console.WriteLine();
         }
     }
 }
