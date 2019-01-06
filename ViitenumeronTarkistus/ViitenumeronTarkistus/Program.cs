@@ -10,6 +10,7 @@ namespace ViitenumeronTarkistus
             switch (int.Parse(Console.ReadLine()))
             {
                 case 1:
+                    Console.Clear();
                     string refNumber = RefNumber();
                     if (LengthChecker(refNumber) == false)
                         break;
@@ -25,6 +26,16 @@ namespace ViitenumeronTarkistus
                     break;
 
                 case 2:
+                    Console.Clear();
+                    string refNumberBase = RefBase1();
+                    if (LengthChecker1(refNumberBase) == false)
+                        break;
+                    tmpRefNumber = Reverse(refNumberBase);
+                    checkNumber = CheckNumberCreator(tmpRefNumber);
+                    refNumber = Conjoiner(refNumberBase, checkNumber);
+                    refNumber = SpaceMaker(refNumber);
+                    Console.Clear();
+                    Print2(refNumber);
                     break;
             }
         }
@@ -40,10 +51,30 @@ namespace ViitenumeronTarkistus
             return Console.ReadLine();
         }
 
+        static string RefBase1()
+        {
+            Console.WriteLine("Syötä viitenumeron perusosa ilman tarkistenumeroa.");
+            return Console.ReadLine();
+        }
+
         static bool LengthChecker(string s)
         {
             if (s.Length < 4 || s.Length > 20)
             {
+                Console.WriteLine("Viitenumerosi on väärän pituinen!");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        static bool LengthChecker1(string s)
+        {
+            if (s.Length < 3 || s.Length > 19)
+            {
+                Console.WriteLine("Viitenumerosi on väärän pituinen!");
                 return false;
             }
             else
@@ -115,6 +146,12 @@ namespace ViitenumeronTarkistus
                 return false;
         }
 
+        static string Conjoiner(string s1, string s2)
+        {
+            string s = s1 + s2;
+            return s;
+        }
+
         static void PrintTrue(string s)
         {
             Console.WriteLine("OK.");
@@ -124,6 +161,11 @@ namespace ViitenumeronTarkistus
         static void PrintFalse()
         {
             Console.WriteLine("Viitenumerosi on väärä.");
+        }
+
+        static void Print2(string s)
+        {
+            Console.WriteLine(s);
         }
     }
 }
