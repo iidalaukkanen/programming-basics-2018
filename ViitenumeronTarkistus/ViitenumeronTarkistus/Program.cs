@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+
 
 namespace ViitenumeronTarkistus
 {
@@ -37,6 +39,36 @@ namespace ViitenumeronTarkistus
                     Console.Clear();
                     Print2(refNumber);
                     break;
+
+                case 3:
+                    Console.Clear();
+                    string basePart = RefBase2();
+                    if (LengthChecker1(basePart) == false)
+                        break;
+                    int amount = Amount();
+                    string[] refNumberList = ListMaker(basePart, amount);
+                    string[] checkNumberList = new string[refNumberList.Length];
+                    for (int i = 0; i < refNumberList.Length; i++)
+                    {
+                        checkNumberList[i] = Reverse(refNumberList[i]);
+                    }
+                    for (int i = 0; i < refNumberList.Length; i++)
+                    {
+                        checkNumberList[i] = CheckNumberCreator(checkNumberList[i]);
+                    }
+                    for (int i = 0; i < refNumberList.Length; i++)
+                    {
+                        refNumberList[i] = refNumberList[i] + checkNumberList[i];
+                    }
+                    for (int i = 0; i < refNumberList.Length; i++)
+                    {
+                        refNumberList[i] = SpaceMaker(refNumberList[i]);
+                    }
+                    string path = @"C:\dev\TEMP\referencenumber.txt";
+                    FileMaker(refNumberList, path);
+                    Console.Clear();
+                    Print3(path);
+                    break;
             }
         }
 
@@ -55,6 +87,36 @@ namespace ViitenumeronTarkistus
         {
             Console.WriteLine("Syötä viitenumeron perusosa ilman tarkistenumeroa.");
             return Console.ReadLine();
+        }
+
+        static string RefBase2()
+        {
+            Console.WriteLine("Kirjoita viitenumeron perusosa:  ");
+            return Console.ReadLine();
+        }
+
+        static int Amount()
+        {
+            int i;
+            do
+            {
+                Console.Write("Syötä haluttujen viitenumeroiden määrä:  ");
+                while (!int.TryParse(Console.ReadLine(), out i))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Väärä syöte!!");
+                    Console.Write("Syötä haluttujen viitenumeroiden määrä:  ");
+                }
+
+                if (i < 1)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Luku ei voi olla pienempi kuin 1.");
+                }
+
+            }
+            while (i < 1);
+            return i;
         }
 
         static bool LengthChecker(string s)
@@ -152,6 +214,39 @@ namespace ViitenumeronTarkistus
             return s;
         }
 
+        static string[] ListMaker(string s, int a)
+        {
+            string[] list = new string[a];
+            for (int i = 0; i < a; i++)
+            {
+                list[i] = s + (i + 1).ToString();
+            }
+            return list;
+        }
+
+        static void FileMaker(string[] a, string path)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (!File.Exists(path))
+                {
+                    File.Create(path).Dispose();
+                    using (TextWriter tw = new StreamWriter(path))
+                    {
+                        tw.WriteLine(a[i]);
+                    }
+                }
+
+                else if (File.Exists(path))
+                {
+                    using (var tw = new StreamWriter(path, true))
+                    {
+                        tw.WriteLine(a[i]);
+                    }
+                }
+            }
+        }
+
         static void PrintTrue(string s)
         {
             Console.WriteLine("OK.");
@@ -160,12 +255,22 @@ namespace ViitenumeronTarkistus
 
         static void PrintFalse()
         {
-            Console.WriteLine("Viitenumerosi on väärä.");
+            Console.WriteLine("Viitenumerosi on väärin!");
         }
 
         static void Print2(string s)
         {
-            Console.WriteLine(s);
+            Console.WriteLine($"Viitenumerosi on {s}.");
+        }
+
+        static void Print3(string p)
+        {
+            string[] lines = File.ReadAllLines(p);
+            Console.WriteLine("Uudet viitenumerosi ovat:\n");
+            foreach (string line in lines)
+            {
+                Console.WriteLine(line);
+            }
         }
     }
 }
